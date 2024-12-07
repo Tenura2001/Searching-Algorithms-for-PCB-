@@ -1,0 +1,58 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Sample PCB grid with obstacles (0 for free space, 1 for obstacles)
+pcb_grid = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 0, 0, 0, 0, 1, 0, 0],
+    [0, 1, 0, 0, 1, 0, 0, 0, 1, 0],
+    [0, 0, 0, 1, 1, 0, 1, 1, 0, 0],
+    [0, 0, 1, 0, 0, 1, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0],
+    [0, 1, 0, 0, 1, 0, 1, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+]
+
+# Define start and end positions
+start = (0, 0)  # Start at top-left corner
+end = (9, 9)    # End at bottom-right corner
+
+# Convert the grid into a numpy array for better handling
+pcb_grid_np = np.array(pcb_grid)
+
+# Create a copy of the grid to mark the start and end points
+pcb_with_start_end = pcb_grid_np.copy()
+
+# Mark the start and end points
+pcb_with_start_end[start] = 2  # Mark start with 2 (green)
+pcb_with_start_end[end] = 3    # Mark end with 3 (red)
+
+# Visualize the grid using matplotlib
+plt.figure(figsize=(6, 6))
+cmap = plt.cm.get_cmap("Greys", 4)  # Create a colormap with 4 distinct values (0-3)
+cmap.set_under('white')  # Values below 1 will be white
+cmap.set_over('black')   # Values above 2 will be black
+cmap.set_bad('black')    # Values 1 will be black for obstacles
+
+plt.imshow(pcb_with_start_end, cmap=cmap, interpolation='nearest')
+
+# Highlight the start and end points with specific colors
+plt.scatter(start[1], start[0], color='green', s=100, label="Start")  # Start point in green
+plt.scatter(end[1], end[0], color='red', s=100, label="End")        # End point in red
+
+# Add a colorbar to explain the grid values
+plt.colorbar(label="0 = Free Space, 1 = Obstacle, 2 = Start, 3 = End")
+
+# Set the axis labels
+plt.xticks(np.arange(0, 10, 1))
+plt.yticks(np.arange(0, 10, 1))
+plt.grid(which='both', color='black', linestyle='-', linewidth=1)
+
+# Title and legend
+plt.title("Sample PCB Layout with Start and End Points")
+plt.legend()
+
+# Show the plot
+plt.show()
